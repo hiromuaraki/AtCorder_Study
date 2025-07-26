@@ -690,5 +690,107 @@ dp[N] = dp[i-1]+dp[i-2]
 '''
 
 
+'''
+問題B_415_Pick Two・・・解けた
+難易度27
+'''
+
+S = input()
+ans = []
+for i in range(len(S)):
+  if S[i] == '#':
+    ans.append(i + 1)
+
+  if len(ans) == 2:
+    print(f'{ans[0]},{ans[1]}')
+    ans = []
+
+'''
+問題B_414_ String Too Long・・・解けた
+方針：
+10^6より大きい入力：NG
+|S| > 100：NG
+
+上の2つの条件をクリアした場合のみ文字列連結
+文字列長が100以下の場合のみ出力
+
+'''
+
+N = int(input())
+MAX_LEN = 1e6
+ans = ''
+for _ in range(N):
+  c,l = input().split()
+  l = int(l)
+  if l > MAX_LEN or len(ans) > 100:
+    print('Too Long')
+    exit()
+  ans += c * l
+
+print(ans if len(ans) <= 100 else 'Too Long')
+
+'''
+問題B_413_B cat2・・・解けた
+'''
+
+N = int(input())
+S = [input() for _ in range(N)]
+C = set()
+for si in S:
+  for sj in S:
+    if si != sj:
+      C.add(si + sj)
+print(len(C))
+
+'''
+問題B_412_Precondition・・・解けた
+
+先頭でない 1番目が英大文字
+Tに含まれない
+'''
+
+S = input()
+T = input()
+ans = 'Yes'
+for i in range(1, len(S)):
+  if S[i].isupper() and S[i -1] not in T:
+    ans = 'No'
+    break
+print(ans)
 
 
+'''
+問題C_122_GET AC・・・解けない（累積和）
+
+時間計算量：O(N±Q）
+
+方針：
+SをN回走査し”AC”なら1,それ以外は0を格納し、
+累積和の配列を作成
+'''
+
+N,Q = map(int, input().split())
+S = input()
+# 累積和の前処理
+SUM_S = [0] * (N + 1)
+for i in range(N): 
+    SUM_S[i + 1] = SUM_S[i] + (1 if S[i:i+2] == 'AC' else 0)
+
+# 区間の計算でO(1)
+for _ in range(Q):
+  l,r = map(int, input().split())
+  print(SUM_S[r - 1] - SUM_S[l - 1])
+
+'''
+問題B_331_Buy One Carton of Milk（全探索）・・・解けた
+難易度182
+'''
+
+N,S,M,L = map(int, input().split())
+ans = 1e6
+for i in range(N+1):
+  for j in range(N+1):
+    for k in range(N+1):
+      if 6*i + 8*j + 12*k >= N:
+        ans = min(ans, S*i + M*j + L*k)
+print(ans)

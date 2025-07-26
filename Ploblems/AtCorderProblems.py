@@ -2,6 +2,31 @@ import re
 from collections import deque # 両橋のデータの追加や削除が高速で行えるデータ構造
 from math import sqrt
 
+'''
+問題A_415_Unsupported Type
+'''
+
+N = int(input())
+A = list(map(int, input().split()))
+X = int(input())
+print('Yes' if X in A else 'No')
+
+'''
+問題B_415_Pick Two・・・解けた
+
+O(N）で出力できる
+'''
+
+S = input()
+ans = []
+for i in range(len(S)):
+  if S[i] == '#':
+    ans.append(i + 1)
+
+  if len(ans) == 2:
+    print(f'{ans[0]},{ans[1]}')
+    ans = []
+
 
 '''
 問題A_414：Streamer Takahashi
@@ -3057,4 +3082,308 @@ for k,v in K.items():
     pre = max(pre, v)
     ans = k
 print(ans)
+
+
+'''
+問題A_337_Scoreboard
+'''
+
+N= int(input())
+aoki, takahashi = 0, 0
+for i in range(N):
+  X, Y = map(int, input().split())
+  takahashi += X
+  aoki += Y
+
+ans = 'Aoki'
+if aoki == takahashi:
+  ans = 'Draw'
+elif aoki  < takahashi:
+  ans = 'Takahashi'
+
+print(ans)
+
+'''
+問題B_337_Extended ABC・・・解けた
+難易度97
+
+方針
+A B,Cの頻度分布を取る
+その上で文字列を掛け算（最大文字列長が100以下かつ個々の文字列が100を超えることはないため
+メモリエラーにならない）
+
+a + b + cの文字列とSが等しい場合だけYes、等しくなければNoとする
+
+別解
+文字列を昇順でソートして元の文字列と一致すればYes,そうでなければNo
+'''
+
+S = input()
+Sa, Sb, Sc = 'A', 'B', 'C'
+a,b,c = 0,0,0
+for i in range(len(S)):
+  if S[i] == 'A': a += 1
+  if S[i] == 'B': b += 1
+  if S[i] == 'C': c += 1
+
+Sa, Sb, Sc = Sa*a, Sb*b, Sc*c
+ex_S = Sa + Sb + Sc
+print('Yes' if ex_S == S else 'No')
+
+# 別解（並べ替え）
+s = sorted(S)
+print('Yes' if s == S else 'No')
+
+'''
+問題A_336_Long Looong
+'''
+
+N = int(input())
+print('L'+'o'*N + 'ng')
+
+'''
+問題B_336_CTZ・・・解けた
+難易度27
+'''
+
+N = int(input())
+ans, N = 0, bin(N)
+for i in N[::-1]:
+  if i != '0': break
+  ans += 1
+print(ans)
+
+print(bin(N)[::-1].find('1'))
+
+'''
+問題A_335_202<s>3</s>
+'''
+
+S = list(input())
+S[-1] = '4'
+print(''.join(S))
+
+'''
+問題B_335_Tetrahedral Number・・・解けた（全探索）
+難易度52
+要修正：O(N^2)へ修正できそう
+'''
+N = int(input())
+
+for x in range(N+1):
+  for y in range(N+1):
+    for z in range(N+1):
+      if x + y + z <= N:
+        print(x, y, z)
+
+# 別解
+N = int(input()) + 1
+for x in range(N):
+    for y in range(N - x):
+        for z in range(N - x - y):
+            print(f'{x} {y} {z}')
+
+'''
+問題A_334_Christmas Present 
+'''
+
+B,G = map(int, input().split())
+print('Glove' if B < G else 'Bat')
+
+'''
+問題B_334_Christmas Trees・・・解けない（要復習）
+難易度479
+'''
+
+# evimaさん解法
+A, M, L, R = map(int, input().split())
+l = L + (A - L) % M
+r = R - (R - A) % M
+print((r - l) // M + 1)
+
+'''
+問題A_333_Three Threes
+'''
+
+N = int(input())
+print(str(N)*N)
+
+'''
+問題B_333_Pentagon・・・解けない（要復習）
+難易度89
+
+線分の長さが短いか長以下をどう判定する？
+
+円周上の距離を求める
+正五角形の点A,B,C,D,Eを0,1,2,3,4に変換
+
+五角形の5点（A, B, C, D, E）を円形に並べて、2点間の「最短距離」を数値として比べる
+
+時計回りと反時計回りの最短距離をminで比べている
+その為、5-Nをし、反時計回りの距離を求めている
+
+線が長いか短いかでそれぞれの線の長さが等しいかを判定
+'''
+
+x = 'ABCDE' # index化
+
+# 線が長いか短いかの判定
+# 長い：2, 3
+# 短い：1, 4
+def f_(x: int, y: int) ->bool:
+  diff = abs(x - y)
+  return diff == 2 or diff == 3
+
+A,B = map(x.index, input())
+C,D = map(x.index, input())
+
+print('Yes' if f_(A, B) == f_(C, D) else 'No')
+# N = abs(A - B)
+# N = min(N, 5 - N)
+# M = abs(C - D)
+# M = min(M, 5 - M)
+# if N == M: print('Yes')
+# else: print('No')
+
+'''
+問題A_332_Online Shopping
+'''
+
+N, S, K = map(int, input().split())
+ans = 0
+for i in range(N):
+  P, Q = map(int, input().split())
+  ans += P*Q
+print(ans if ans >= S else ans + K)
+
+'''
+問題B_332_Glass and Mug・・・解けない
+難易度76
+シミュレーション問題
+
+min(変化量、残りキャパ)
+注げる最大の水の量＝マグの残量 or グラスの空き容量、のどちらか小さい方
+
+注げる量 = min(マグの残量, グラスの空き容量)
+         = min(mag, G - glass)
+
+状態の更新を一つずつ行う
+'''
+
+K,G,M = map(int, input().split())
+glass, mag = 0, 0
+for _ in range(K):
+  if glass == G:
+    glass = 0
+  elif mag == 0:
+    mag = M
+  else:
+    pour = min(mag ,G - glass)
+    glass += pour
+    mag -= pour
+print(glass, mag)
+
+'''
+問題A_331_Tomorrow
+
+場合分け
+年を跨いでいるか：M=mかつD＝d
+月を跨いでいるか：D＝d
+日だけ加算か：それ以外
+'''
+
+M,D = map(int, input().split())
+y,m,d = map(int, input().split())
+
+# 年を跨いでいるか
+if M == m and D == d:
+  y += 1
+  m, d = 1, 1
+# 月を跨いでいるか
+elif D == d:
+  m += 1
+  d = 1
+# 日だけ加算
+else:
+  d += 1
+print(y, m, d)
+
+'''
+問題B_331_Buy One Carton of Milk・・・解けない（全探索）
+
+N^3通り回す
+'''
+N,S,M,L = map(int, input().split())
+ans = 1e6
+for i in range(N+1):
+  for j in range(N+1):
+    for k in range(N+1):
+      if 6*i + 8*j + 12*k >= N:
+        ans = min(ans, S*i + M*j + L*k)
+print(ans)
+
+
+'''
+問題C_331_Sum of Numbers Greater Than Me・・・解けない（要復習）
+難易度288
+'''
+
+# 他の人の解法
+N = int(input())
+A = list(map(int, input().split()))
+total = sum(A)
+R = [0] * (10**6+1)
+for a in A:
+  R[a] += a
+
+for i in range(1, len(R)):
+  R[i] += R[i - 1]
+
+print(*[total - R[a] for a in A])
+
+'''
+問題A_330_Counting Passes
+'''
+
+N,L = map(int, input().split())
+A = list(map(int, input().split()))
+ans = 0
+for a in A:
+  if L <= a: ans += 1
+print(ans)
+
+'''
+問題B_330_Minimize Abs 1・・・解けない（問題の意味が不明）
+難易度118
+区間L,Rの中で最もA[i]に近いXiを求める
+
+場合分け
+A[i]＜L：L
+R ≦ A[i] ≦ L：A[i]
+A[i]＞R：R
+
+x を L 以上 R 以下に丸める
+min(max(x, L), R
+
+min(), max()の本質＝
+場合分け（条件分岐）を数式で表す為の道具
+'''
+
+N,L,R = map(int, input().split())
+A = list(map(int, input().split()))
+ans = [min(max(x, L), R) for x in A]
+print(*ans)
+
+
+
+
+
+
+
+
+
+
+
+
+  
 

@@ -168,10 +168,60 @@ for i in range(N): # N+1の配列に対してN回しか回らないので1回少
 print(ans)
 
 '''
-問題C_407_Security 2
+問題C_407_Security 2・・・解けない
+難易度295
+
+tが空文字列である状態から文字列Sと一致する最小のボタン回数を求める
+ボタンA：末尾に0を追加
+ボタンB:tに含まれるすべての数字が+1される。9の数字は0になる
+
+1 ≦ |S| ≦ 5 * 10^5
+
+方針：
+''から作って考えるのは難しいから後ろから考える
+
+あらかじめ文字列長の長さを足しておく
+全体-1回を管理する変数xを準備
+mod10をし整数を循環させる
 '''
 
+'''
+問題C_405_Sum of Product・・・解けない（累積和）
+難易度102
+時間計算量：O(N）
 
+
+合計を前もってメモしておく
+累積和：
+A1+A2+A3...An
+
+階差：
+A2-A1, A3-A2... 
+A[0] = 0
+A[1] = 1...
+階差：隣り同士の差を見て法則を見つける
+
+階差と累積和は互いに逆の操作になっている
+'''
+
+N = int(input())
+A = list(map(int, input().split()))
+ans, sum = 0, 0
+for i in range(N):
+  ans += sum * A[i]
+  sum += A[i]
+print(ans)
+
+
+
+S  = list(input())
+n = len(S)
+x, ans = 0, n
+while (S):
+  nn = int(S.pop())
+  ans += (nn - x) % 10
+  x = nn
+print(ans)
 
 
 '''
@@ -248,7 +298,127 @@ for i in range(2, N+1):
 print(dp[N])
 
 
+'''
+問題C_122_get AC（累積和）・・・解けない
 
+時間計算量：O(N±Q)
+難易度700
+
+各区間の部分文字列’AC’が何回現れるか求める
+方針
+
+先頭は0
+N+1の要素数を準備
+ACが現れた回数を記録する累積和のリストを作成
+[0, 1, 1, 2, 2, 2, 3, 3, 3]
+
+部分文字列＝AC：１を加算
+それ以外は：0を加算
+
+'''
+
+N, Q = map(int, input().split())
+S = input()
+
+t = [0]*(N+1) # N+1の要素数の配列を準備
+# 累積和の配列を作る
+for i in range(N):
+  t[i+1] = t[i] + (1 if S[i : i+2] == 'AC' else 0)
+
+for i in range(Q):
+  l, r = map(int, input().split())
+  print(t[r-1] - t[l-1])
+
+  '''
+  累積和の基本型
+  '''
+
+N = len(A)
+S = [0] * (N + 1)
+for i in range(N):
+    S[i+1] = S[i] + A[i]
+
+
+
+'''
+問題C_337_Lining Up 2・・・解けた
+難易度258
+
+時間計算量：O(N)
+
+方針
+データ構造を辞書にする
+並び方の情報：人
+まずこのデータを作る
+
+キーの-1を起点としキーを順々に更新していく
+'''
+
+N = int(input())
+A = list(map(int, input().split()))
+L = {a : i+1 for i,a  in enumerate(A)}
+key, ans = -1, []
+
+for i in range(N):
+  ans.append(L[key])
+  key = L[key]
+print(*ans)
+
+'''
+問題C_336_Even Digits・・・解けない
+難易度343
+Nを10進法で表した時に偶数の数字（0, 2, 4, 8）だけが登場する
+
+5進数に変換する
+
+Nを5で割った余りに2をかける
+２をかけて（0, 2, 4, 6, 8）に戻す 
+Nを割る
+N >０の間繰り返し、ループ終了後、文字列を逆順にし出力
+'''
+
+N = int(input())
+ans = ''
+if N == 1:
+  print(0)
+  exit()
+N -= 1
+while N > 0:
+  ans += str((N % 5) * 2)
+  N //= 5
+print(ans[::-1])
+
+'''
+問題C_333_Repunit Trio・・・解けない（要復習）
+難易度258
+
+時間計算量：O(N^3)
+
+入力値に注目
+N = 333
+112222222233
+
+N≦333の制約なので12桁までしか考えなくいい
+3つのレピュユニットを全列挙するには3重ループで全探索し
+文字列を連結させていく。
+重複を文字列を除くためセットに追加していく
+'''
+
+N = int(input())
+L = 12
+r = [int('1'* (i+1)) for i in range(L)]
+set = set()
+
+for x in range(L):
+  for y in range(L):
+    for z in range(L):
+      set.add(r[x] + r[y] + r[z])
+print(sorted(set)[N-1])
+
+'''
+問題C_332_T-shirts・・・解けない（要復習）
+難易度161
+'''
 
 
 
